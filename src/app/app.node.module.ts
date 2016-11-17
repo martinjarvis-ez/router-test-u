@@ -8,8 +8,10 @@ import { NgModule, Inject, Optional, SkipSelf } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UniversalModule, isBrowser, isNode } from 'angular2-universal/node'; // for AoT we need to manually split universal packages
 
-import { HomeModule } from './+home/home.module';
-import { AboutModule } from './+about/about.module';
+import { CoreModule } from './core';
+import { BookingFunnelModule } from './booking-funnel';
+import { ContentModule } from './content';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -31,8 +33,9 @@ export function getLRU(lru?: any) {
     FormsModule,
 
     SharedModule,
-    HomeModule,
-    AboutModule,
+    CoreModule,
+BookingFunnelModule,
+ContentModule
 
     AppRoutingModule
   ],
@@ -47,7 +50,10 @@ export function getLRU(lru?: any) {
         [new Inject('LRU'), new Optional(), new SkipSelf()]
       ]
     },
-    CacheService
+    CacheService,
+    ...ContentModule.forRoot(),
+...BookingFunnelModule.forRoot(),
+...CoreModule.forRoot()
   ]
 })
 export class MainModule {

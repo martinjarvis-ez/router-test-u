@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var path = require('path');
 var clone = require('js.clone');
 var webpackMerge = require('webpack-merge');
+var autoprefixer = require('autoprefixer');
 
 export var commonPlugins = [
   new webpack.ContextReplacementPlugin(
@@ -35,7 +36,8 @@ export var commonConfig = {
       { test: /\.ts$/, loaders: ['awesome-typescript-loader', 'angular2-template-loader'] },
       { test: /\.html$/, loader: 'raw-loader' },
       { test: /\.css$/, loader: 'raw-loader' },
-      { test: /\.json$/, loader: 'json-loader' }
+      { test: /\.json$/, loader: 'json-loader' },
+       { test: /\.scss$/, loaders: ['to-string', 'css', 'postcss', 'resolve-url', 'sass?sourceMap'] }
     ],
   },
   plugins: [

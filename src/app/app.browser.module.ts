@@ -2,11 +2,14 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UniversalModule, isBrowser, isNode } from 'angular2-universal/browser'; // for AoT we need to manually split universal packages
 
-import { HomeModule } from './+home/home.module';
-import { AboutModule } from './+about/about.module';
+import { CoreModule } from './core';
+import { BookingFunnelModule } from './booking-funnel';
+import { ContentModule } from './content';
+
 import { AppComponent } from './app.component';
+
 import { AppRoutingModule } from './app-routing.module';
-import { SharedModule } from './shared/shared.module';
+
 import { CacheService } from './shared/cache.service';
 
 export function getLRU() {
@@ -24,8 +27,9 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     FormsModule,
 
     SharedModule,
-    HomeModule,
-    AboutModule,
+    CoreModule,
+BookingFunnelModule,
+ContentModule
 
     AppRoutingModule
   ],
@@ -34,7 +38,10 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: 'isNode', useValue: isNode },
 
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    CacheService
+    CacheService,
+    ...ContentModule.forRoot(),
+...BookingFunnelModule.forRoot(),
+...CoreModule.forRoot()
   ]
 
 })

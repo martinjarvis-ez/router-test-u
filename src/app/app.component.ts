@@ -1,24 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, Type } from '@angular/core';
+import { FactoryMapService } from './content/services/factory-map.service';
+import { BookingFunnelModule } from './booking-funnel';
+import { ContentModule } from './content';
+
+import * as mapKeys from "lodash/mapKeys";
 
 @Component({
   selector: 'app',
   styles: [`
-   .active {
-     background-color: gray;
-     color: white;
-   }
+
   `],
   template: `
-    <nav>
-      <a routerLink="/home" routerLinkActive="active">Home</a>
-      <a routerLink="/about" routerLinkActive="active">About</a>
-    </nav>
-
-    <p>Hello Angular Universal App</p>
-
     <router-outlet></router-outlet>
   `
 })
 export class AppComponent {
+  constructor(private factoryMap : FactoryMapService){
 
+    mapKeys(ContentModule.getComponentMappings(), (value:Type<any>, path:string)=>{
+      factoryMap.registerFactory(path,value);
+    });
+
+    mapKeys(BookingFunnelModule.getComponentMappings(), (value:Type<any>, path:string)=>{
+      factoryMap.registerFactory(path,value);
+    });
+  }
 }
